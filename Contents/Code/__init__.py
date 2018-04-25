@@ -77,7 +77,7 @@ class XBMCNFO(PlexAgent):
     Uses XBMC nfo files as the metadata source for Plex Movies.
     """
     name = 'XBMCnfoMoviesImporter'
-    ver = '1.1-118-gd7c1999-224'
+    ver = '1.1-114-g094312c-220'
     primary_provider = True
     languages = [Locale.Language.NoLanguage]
     accepts_from = [
@@ -657,9 +657,6 @@ class XBMCNFO(PlexAgent):
                     pass
                 # Collections (Set)
                 setname = None
-                # Create a pattern to remove 'Series' and 'Collection' from the end of the
-                # setname since Plex adds 'Collection' in the GUI already
-                setname_pat = re.compile(r'[\s]?(series|collection)$', re.IGNORECASE)
                 try:
                     metadata.collections.clear()
                     # trying enhanced set tag name first
@@ -684,7 +681,7 @@ class XBMCNFO(PlexAgent):
                 # Collections (Tags)
                 try:
                     tags = nfo_xml.xpath('tag')
-                    [metadata.collections.add(setname_pat.sub('', t.strip())) for tag_xml in tags for t in tag_xml.text.split('/')]
+                    [metadata.collections.add(t.strip()) for tag_xml in tags for t in tag_xml.text.split('/')]
                     log.debug('Added Collection(s) from tags.')
                 except:
                     log.debug('Error adding Collection(s) from tags.')
